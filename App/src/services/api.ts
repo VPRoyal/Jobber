@@ -15,10 +15,10 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     // Add auth token if available
-    const token = localStorage.getItem("authToken")
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
+    // const token = localStorage.getItem("authToken")
+    // if (token) {
+    //   config.headers.Authorization = `Bearer ${token}`
+    // }
     return config
   },
   (error) => {
@@ -32,8 +32,8 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Handle unauthorized access
-      localStorage.removeItem("authToken")
-      window.location.href = "/login"
+      // localStorage.removeItem("authToken")
+      // window.location.href = "/login"
     }
 
     // Enhanced error handling

@@ -1,6 +1,6 @@
 "use client"
 
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router"
 import { Home, ArrowLeft } from "lucide-react"
 
 const NotFound = () => {
@@ -20,10 +20,10 @@ const NotFound = () => {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Go Back
           </button>
-          <Link to="/" className="btn-primary">
+          <NavLink to="/" className="btn-primary">
             <Home className="h-4 w-4 mr-2" />
             Back to Dashboard
-          </Link>
+          </NavLink>
         </div>
       </div>
     </div>
