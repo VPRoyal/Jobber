@@ -99,7 +99,7 @@ export const deleteJob = async (id: string): Promise<void> => {
 }
 export const getAvailableServices = async (): Promise<JobTypes[]> => {
   try {
-    const response = await api.get("/jobs/available")
+    const response = await api.get("/jobs/types")
     return response.data.services || []
   } catch (error) {
     console.error("Error fetching available job types:", error)

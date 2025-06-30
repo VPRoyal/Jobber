@@ -65,7 +65,7 @@ const CreateJob = () => {
     }
 
     fetchJobTypes()
-  }, [showToast])
+  }, [])
 
   const validateCronExpression = (cron: string): boolean => {
     // Enhanced cron validation regex
