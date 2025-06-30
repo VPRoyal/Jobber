@@ -159,7 +159,7 @@ DELETE /jobs/:id       → Delete job (planned)
 
 * **Frontend:** [https://jobber-1.onrender.com/](https://jobber-1.onrender.com/)
 * **Backend:** [https://jobber-xm4d.onrender.com](https://jobber-xm4d.onrender.com)
-* **Docs (Swagger - TODO):** `/docs`
+* **Docs (Swagger):** `/api-docs`
 
 ---
 
