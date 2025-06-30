@@ -10,7 +10,7 @@ export class CreateJobDTO {
   @Matches(/^([\d\*\/\-,]+\s+){4}[\d\*\/\-,]+$/)
   cronExpression!: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   description!: string;
 
