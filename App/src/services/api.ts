@@ -1,5 +1,5 @@
 import axios from "axios"
-import type { Job, CreateJobPayload, JobFilters } from "../types"
+import type { Job, CreateJobPayload, JobFilters, JobTypes } from "../types"
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000"
 
@@ -94,6 +94,15 @@ export const deleteJob = async (id: string): Promise<void> => {
     await api.delete(`/jobs/${id}`)
   } catch (error) {
     console.error("Error deleting job:", error)
+    throw error
+  }
+}
+export const getAvailableServices = async (): Promise<JobTypes[]> => {
+  try {
+    const response = await api.get("/jobs/available")
+    return response.data.services || []
+  } catch (error) {
+    console.error("Error fetching available job types:", error)
     throw error
   }
 }

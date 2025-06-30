@@ -8,3 +8,4 @@ export const jobRouter = Router();
 jobRouter.get('/', JobController.list);
 jobRouter.get('/:id', JobController.get);
 jobRouter.post('/create', validationMiddleware(CreateJobDTO), JobController.create);
+jobRouter.get('/available', JobController.getJobTypes);

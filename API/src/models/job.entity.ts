@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { JobType } from '../types/jobType.enum';
 
 export type JobStatus = 'active' | 'inactive' | 'paused';
 
@@ -40,4 +41,15 @@ export class Job {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date;
+
+  @Column({
+    type: 'enum',
+    enum: JobType,
+    nullable: false,
+  })
+  type!: JobType;
+
+// @Column({ type: 'json', nullable: true })
+// payload?: Record<string, any>; // custom config for the job
+
 }

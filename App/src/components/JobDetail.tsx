@@ -4,18 +4,7 @@ import { useState, useEffect } from "react"
 import { useParams, NavLink, useNavigate } from "react-router"
 import { getJobById } from "../services/api"
 import { ArrowLeft, Calendar, Clock, Settings, Loader2 } from "lucide-react"
-
-interface Job {
-  id: string
-  name: string
-  cronExpression: string
-  status: string
-  lastRunAt?: string
-  nextRunAt?: string
-  createdAt: string
-  updatedAt: string
-  description?: string
-}
+import type { Job } from "../types"
 
 const JobDetail = () => {
   const { id } = useParams<{ id: string }>()
@@ -160,6 +149,13 @@ const JobDetail = () => {
                   <p className="text-sm font-medium text-gray-900">Job ID</p>
                   <p className="text-sm text-gray-600 font-mono">{job.id}</p>
                 </div>
+
+                {job.type && (
+              <div>
+                <label className="text-sm font-medium text-gray-700">Job Type</label>
+                <p className="mt-1 text-sm text-gray-600 font-medium">{job.type}</p>
+              </div>
+            )}
 
                 <div>
                   <p className="text-sm font-medium text-gray-900">Created At</p>

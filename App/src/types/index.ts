@@ -8,12 +8,14 @@ export interface Job {
   createdAt: string
   updatedAt: string
   description?: string
+  type: string
 }
 
 export interface CreateJobPayload {
   name: string
   cronExpression: string
   description?: string
+  type: string
 }
 
 export interface JobFilters {
@@ -35,4 +37,9 @@ export interface PaginatedResponse<T> {
     total: number
     totalPages: number
   }
+}
+
+export interface JobTypes {
+  type: string
+  label: string
 }

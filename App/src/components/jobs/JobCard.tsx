@@ -37,6 +37,14 @@ const JobCard = ({ job }: JobCardProps) => {
       </div>
 
       {job.description && <p className="text-sm text-gray-600 mb-4 line-clamp-2">{job.description}</p>}
+      
+      {job.type && (
+        <div className="mb-3">
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            {job.type}
+          </span>
+        </div>
+      )}
 
       <div className="space-y-3 text-sm text-gray-600">
         <div className="flex items-center">

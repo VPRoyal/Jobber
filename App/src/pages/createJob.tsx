@@ -2,23 +2,27 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, NavLink } from "react-router"
 import { ArrowLeft, Plus, Clock, Info } from "lucide-react"
 import { createJob } from "../services/api"
 import { useToast } from "../hooks/useToast"
 import LoadingSpinner from "@/components/common/loadingSpinner"
+import type { JobTypes } from "@/types"
+import { getAvailableServices } from "../services/api"
 
 interface JobFormData {
   name: string
   cronExpression: string
   description: string
+  type: string
 }
 
 interface FormErrors {
   name?: string
   cronExpression?: string
   general?: string
+  type?: string
 }
 
 const CreateJob = () => {
@@ -28,9 +32,12 @@ const CreateJob = () => {
     name: "",
     cronExpression: "",
     description: "",
+    type: "",
   })
   const [errors, setErrors] = useState<FormErrors>({})
   const [loading, setLoading] = useState(false)
+  const [loadingJobTypes, setLoadingJobTypes] = useState(true)
+  const [availableJobTypes, setAvailableJobTypes] = useState<JobTypes[]>([])
 
   const cronExamples = [
     { expression: "0 9 * * *", description: "Daily at 9:00 AM", icon: "🌅" },
@@ -40,6 +47,25 @@ const CreateJob = () => {
     { expression: "0 */2 * * *", description: "Every 2 hours", icon: "🕐" },
     { expression: "0 0 * * 0", description: "Every Sunday at midnight", icon: "🌙" },
   ]
+
+  // Fetch available job types on component mount
+
+  useEffect(() => {
+    const fetchJobTypes = async () => {
+      try {
+        setLoadingJobTypes(true)
+        const types = await getAvailableServices()
+        setAvailableJobTypes(types)
+      } catch (err) {
+        showToast("Failed to load available job types", "error")
+        console.error("Error fetching job types:", err)
+      } finally {
+        setLoadingJobTypes(false)
+      }
+    }
+
+    fetchJobTypes()
+  }, [showToast])
 
   const validateCronExpression = (cron: string): boolean => {
     // Enhanced cron validation regex
@@ -58,6 +84,11 @@ const CreateJob = () => {
       newErrors.name = "Job name must be at least 3 characters"
     } else if (formData.name.trim().length > 100) {
       newErrors.name = "Job name must be less than 100 characters"
+    }
+
+    // Job type validation
+    if (!formData.type) {
+      newErrors.type = "Job type is required"
     }
 
     // Cron expression validation
@@ -86,6 +117,7 @@ const CreateJob = () => {
         name: formData.name.trim(),
         cronExpression: formData.cronExpression.trim(),
         description: formData.description.trim() || undefined,
+        type: formData.type,
       })
 
       showToast("Job created successfully!", "success")
@@ -164,6 +196,41 @@ const CreateJob = () => {
                 />
                 {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
                 <p className="mt-1 text-xs text-gray-500">{formData.name.length}/100 characters</p>
+              </div>
+
+              {/* Job Type Selection */}
+              <div>
+                <label htmlFor="jobType" className="block text-sm font-medium text-gray-700 mb-2">
+                  Job Type *
+                </label>
+                {loadingJobTypes ? (
+                  <div className="input flex items-center justify-center py-3">
+                    <div className="loading-spinner h-4 w-4 mr-2" />
+                    <span className="text-gray-500">Loading job types...</span>
+                  </div>
+                ) : (
+                  <select
+                    id="jobType"
+                    value={formData.type}
+                    onChange={(e) => handleInputChange("type", e.target.value)}
+                    className={`input ${errors.type ? "input-error" : ""}`}
+                    disabled={loading || availableJobTypes.length === 0}
+                  >
+                    <option value="">Select a job type</option>
+                    {availableJobTypes.map((jobType) => (
+                      <option key={jobType.type} value={jobType.type}>
+                        {jobType.label}
+                      </option>
+                    ))}
+                  </select>
+                )}
+                {errors.type && <p className="mt-1 text-sm text-red-600">{errors.type}</p>}
+                {!loadingJobTypes && availableJobTypes.length === 0 && (
+                  <p className="mt-1 text-sm text-yellow-600">
+                    No Jobs available. Please contact your administrator.
+                  </p>
+                )}
+                <p className="mt-1 text-xs text-gray-500">Choose the type of job you want to schedule</p>
               </div>
 
               {/* Cron Expression */}
