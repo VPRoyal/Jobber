@@ -5,6 +5,7 @@ import { jobRouter } from './routes/job.routes';
 import { errorMiddleware } from './middlewares/error.mid';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { setupSwagger } from './swagger';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ async function createServer(): Promise<express.Application> {
   }
 
   const server = express();
+  setupSwagger(server);
   server.use(cors());
   server.use(express.json());
 

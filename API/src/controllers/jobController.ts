@@ -32,7 +32,7 @@ export class JobController {
       const dto = plainToClass(CreateJobDTO, req.body);
       if (!ExecutorRegistry.isValidType(dto.type)) {
       Logger.error(`Invalid job type: ${dto.type}`);
-      res.status(400).json({ error: `Invalid job type.` });
+      res.status(400).json({ error: `Invalid input.` });
       return;
     }
       const newJob = await JobService.create(dto);

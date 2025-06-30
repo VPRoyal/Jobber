@@ -25,6 +25,8 @@
     "morgan": "^1.10.0",
     "mysql2": "^3.14.1",
     "node-cron": "^4.1.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.25",
     "winston": "^3.17.0"
   },
@@ -35,6 +37,8 @@
     "@types/helmet": "^0.0.48",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.0.7",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "nodemon": "^3.1.10",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
