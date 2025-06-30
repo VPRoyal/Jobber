@@ -8,20 +8,39 @@ import cors from 'cors';
 
 dotenv.config();
 
-async function bootstrap() {
-  await AppDataSource.initialize();
-  const app = express();
-  app.use(cors());
+let app: express.Application;
 
-  app.use(express.json());
+async function createServer(): Promise<express.Application> {
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
+  }
 
-  app.use('/jobs', jobRouter);
-  app.use(errorMiddleware);
+  const server = express();
+  server.use(cors());
+  server.use(express.json());
 
-  const port = process.env.PORT || 4000;
-  app.listen(port, () => {
-    console.log(`ChronoScheduler running on port ${port}`);
+  server.use('/jobs', jobRouter);
+  server.use(errorMiddleware);
+
+  return server;
+}
+
+// If running locally (not in Vercel)
+if (process.env.ENVIRONMENT === 'dev') {
+  createServer().then(localApp => {
+    const port = process.env.PORT || 4000;
+    localApp.listen(port, () => {
+      console.log(`Jobber is running locally on http://localhost:${port}`);
+    });
+  }).catch(err => {
+    console.error('Error starting local server:', err);
   });
 }
 
-bootstrap().catch(err => console.error('Bootstrap error', err));
+// Export for Vercel serverless
+export default async function handler(req: any, res: any) {
+  if (!app) {
+    app = await createServer();
+  }
+  return app(req, res);
+}

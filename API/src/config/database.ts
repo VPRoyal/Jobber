@@ -3,7 +3,6 @@ import { Job } from '../models/job.entity';
 import dotenv from 'dotenv';
 
 dotenv.config();
-console.log("Database config: ", process.env.DB_HOST, process.env.DB_PORT, process.env.DB_USER, process.env.DB_NAME);
 export const AppDataSource = new DataSource({
   type: 'mysql',
   host:     process.env.DB_HOST     || 'localhost',    // e.g. 'localhost'
